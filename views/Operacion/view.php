@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Rol */
+/* @var $model app\models\Operacion */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Rols'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Operacions'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="rol-view">
+<div class="operacion-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -33,13 +33,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-	<h2>Operaciones Permitidas</h2>
-	 
-	<?php
-	 
-	foreach ($model->operacionesPermitidasList as $operacionPermitida) {
-		echo "[" . $operacionPermitida['nombre'] . "] ";
-	}
-	 
-	?>
 </div>

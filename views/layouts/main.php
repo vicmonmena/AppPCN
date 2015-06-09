@@ -38,7 +38,8 @@ AppAsset::register($this);
                     ['label' => 'Home', 'url' => ['/site/index']],
                     ['label' => 'About', 'url' => ['/site/about']],
                     ['label' => 'Contact', 'url' => ['/site/contact']],
-					['label' => 'Rol (solo admins)', 'url' => ['/rol']],
+					['label' => 'Roles (solo admins)', 'url' => ['/rol']],
+					['label' => 'Operaciones (solo admins)', 'url' => ['/operacion']],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
