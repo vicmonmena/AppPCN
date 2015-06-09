@@ -14,35 +14,38 @@ use app\models\ResetPasswordForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
 use app\models\User;
+use app\models\AccessHelpers;
 
 class SiteController extends Controller
 {
     public function behaviors()
     {
+		
+		/*
+		 * ******************************
+		 * 'only' => ... significa que las reglas se aplicarán solo a las acciones logout, sigoout y about
+		 * ******************************
+		 * Esto significa que para las acciones 
+		 * ‘login’, ‘signup’, ‘error’, 
+		 * se permitirá el acceso para los usuarios que no están autenticados 
+		 * (representados por ‘?’); en tanto que las acciones ‘about’, ‘logout’, e ‘index’ 
+		 * serán accesibles para los usuarios autenticados (representados por ‘@’).
+		 */
 		return [
             'access' => [
                 'class' => AccessControl::className(),
 				'only' => ['logout', 'signup', 'about'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'signup', 'error'],
                         'allow' => true,
 						'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['about', 'logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-					[
-						'actions' => ['about'],
-						'allow' => true,
-						'roles' => ['@'],
-						'matchCallback' => function ($rule, $action) {
-							$valid_roles = [User::ROLE_ADMIN, User::ROLE_SUPERUSER];
-							return User::roleInArray($valid_roles) && User::isActive();
-						}
-					],
                 ],
             ],
             'verbs' => [
@@ -53,6 +56,33 @@ class SiteController extends Controller
             ],
         ];
     }
+
+	/*
+	 * Este método se ejecuta antes que cualquier acción del controlador, 
+	 * a continuación de todos los filtros existentes 
+	 * (como los que se encuentran en el método behaviors).
+	 */
+	public function beforeAction($action) {
+		if (!parent::beforeAction($action)) {
+			return false;
+		}
+	 
+		$operacion = str_replace("/", "-", Yii::$app->controller->route);
+	 
+		$permitirSiempre = ['site-captcha', 'site-signup', 
+			'site-index', 'site-error', 'site-contact', 'site-login', 'site-logout'];
+	 
+		if (in_array($operacion, $permitirSiempre)) {
+			return true;
+		}
+	 
+		if (!AccessHelpers::getAcceso($operacion)) {
+			echo $this->render('nopermitido');
+			return false;
+		}
+	 
+		return true;
+	}
 
     public function actions()
     {
