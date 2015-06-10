@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 use app\models\Rol;
 
@@ -21,6 +22,7 @@ use app\models\Rol;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property integer $rol_id
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -28,10 +30,6 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 	
-	// Constantes que definen los roles de un usuario
-	const ROLE_USER = 10;
-	const ROLE_ADMIN = 20;
-	const ROLE_SUPERUSER = 30;
     /**
      * @inheritdoc
      */
@@ -46,7 +44,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            'timestamp' => [
+                'class'      => 'yii\behaviors\TimestampBehavior',
+                'value'      => new Expression('NOW()'),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'created_at',
+					ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at'
+                ],
+            ],
         ];
     }
 
@@ -58,9 +63,28 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+			[['username', 'auth_key', 'password_hash', 'email'], 'required'],
+			[['status', 'rol_id'], 'integer'],
+			[['created_at', 'updated_at'], 'safe'],
+			[['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
+			[['auth_key'], 'string', 'max' => 32]
         ];
     }
 
+	public function attributeLabels() {
+		return [
+           'id' => Yii::t('app', 'ID'),
+           'username' => Yii::t('app', 'Username'),
+           'auth_key' => Yii::t('app', 'Auth Key'),
+           'password_hash' => Yii::t('app', 'Password Hash'),
+           'password_reset_token' => Yii::t('app', 'Password Reset Token'),
+           'email' => Yii::t('app', 'Email'),
+           'status' => Yii::t('app', 'Status'),
+           'created_at' => Yii::t('app', 'Created At'),
+           'updated_at' => Yii::t('app', 'Updated At'),
+           'rol_id' => Yii::t('app', 'Rol ID'),
+       ];
+	}
     /**
      * @inheritdoc
      */

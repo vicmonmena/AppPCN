@@ -3,20 +3,31 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Operacion;
-use app\models\OperacionSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\models\Operacion;
+use app\models\OperacionSearch;
+use app\controllers\BaseController;
 
 /**
  * OperacionController implements the CRUD actions for Operacion model.
  */
-class OperacionController extends Controller
-{
-    public function behaviors()
-    {
+class OperacionController extends BaseController {
+	
+    public function behaviors() {
         return [
+			'access' => [
+                'class' => AccessControl::className(),
+				'only' => ['operacion'],
+                'rules' => [
+                    [
+                        'actions' => ['operacion'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -25,7 +36,7 @@ class OperacionController extends Controller
             ],
         ];
     }
-
+	
     /**
      * Lists all Operacion models.
      * @return mixed

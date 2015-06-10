@@ -8,17 +8,25 @@ use Yii;
 /**
  * Signup form
  */
-class SignupForm extends Model
-{
-    public $username;
+class SignupForm extends Model {
+
+    /**
+	 * Rol por defecto con el que se da de alta un usuario desde el formulario de altas.
+	 */
+	const DEFAULT_USER = 1;
+	/**
+	 * Estado por defecto con el que se da de alta un usuario desde el formulario de altas.
+	 */
+	const DEFAULT_STATUS = 0;
+	
+	public $username;
     public $email;
     public $password;
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
@@ -40,15 +48,18 @@ class SignupForm extends Model
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup()
-    {
+    public function signup() {
         if ($this->validate()) {
+			Yii::trace('Creando usuario: ' . $this->username);
             $user = new User();
             $user->username = $this->username;
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
+			$user->rol_id = self::DEFAULT_USER;
+			$user->status = self::DEFAULT_STATUS;
             if ($user->save()) {
+				Yii::trace('Nuevo usuario: ' . $this->username);
                 return $user;
             }
         }

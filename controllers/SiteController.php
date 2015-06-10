@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\models\LoginForm;
@@ -14,13 +13,11 @@ use app\models\ResetPasswordForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
 use app\models\User;
-use app\models\AccessHelpers;
+use app\controllers\BaseController;
 
-class SiteController extends Controller
-{
-    public function behaviors()
-    {
-		
+class SiteController extends BaseController {
+    
+	public function behaviors(){
 		/*
 		 * ******************************
 		 * 'only' => ... significa que las reglas se aplicarán solo a las acciones logout, sigoout y about
@@ -42,7 +39,7 @@ class SiteController extends Controller
 						'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['about', 'logout', 'index', 'rol'],
+                        'actions' => ['about', 'logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -57,35 +54,7 @@ class SiteController extends Controller
         ];
     }
 
-	/*
-	 * Este método se ejecuta antes que cualquier acción del controlador, 
-	 * a continuación de todos los filtros existentes 
-	 * (como los que se encuentran en el método behaviors).
-	 */
-	public function beforeAction($action) {
-		if (!parent::beforeAction($action)) {
-			return false;
-		}
-	 
-		$operacion = str_replace("/", "-", Yii::$app->controller->route);
-	 
-		$permitirSiempre = ['site-captcha', 'site-signup', 
-			'site-index', 'site-error', 'site-contact', 'site-login', 'site-logout'];
-	 
-		if (in_array($operacion, $permitirSiempre)) {
-			return true;
-		}
-	 
-		if (!AccessHelpers::getAcceso($operacion)) {
-			echo $this->render('nopermitido');
-			return false;
-		}
-	 
-		return true;
-	}
-
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -97,13 +66,11 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
-    {
+    public function actionIndex() {
         return $this->render('index');
     }
 
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -118,15 +85,13 @@ class SiteController extends Controller
         }
     }
 
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->goHome();
     }
 
-    public function actionContact()
-    {
+    public function actionContact() {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
@@ -139,13 +104,11 @@ class SiteController extends Controller
         }
     }
 
-    public function actionAbout()
-    {
+    public function actionAbout() {
         return $this->render('about');
     }
 	
-	public function actionSignup()
-    {
+	public function actionSignup() {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -160,8 +123,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionRequestPasswordReset()
-    {
+    public function actionRequestPasswordReset() {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
@@ -178,8 +140,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionResetPassword($token)
-    {
+    public function actionResetPassword($token) {
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {

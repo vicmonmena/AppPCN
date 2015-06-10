@@ -4,6 +4,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\controllers\BaseController;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -25,6 +26,27 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
     <div class="wrap">
         <?php
+			
+			$items = [
+				['label' => 'Home', 'url' => ['/site/index']],
+                    ['label' => 'About', 'url' => ['/site/about']],
+                    ['label' => 'Contact', 'url' => ['/site/contact']],					
+			];
+			if (Yii::$app->user->isGuest) {
+				array_push($items,['label' => 'Login', 'url' => ['/site/login']]);
+			} else {
+				
+				if (BaseController::isAdmin()) {
+					array_push($items, 
+						['label' => 'Usuarios', 'url' => ['/user']],
+						['label' => 'Roles', 'url' => ['/rol']],
+						['label' => 'Operaciones', 'url' => ['/operacion']]
+					);
+				}
+				array_push($items, ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+					'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']]
+				);
+			}
             NavBar::begin([
                 'brandLabel' => 'My Company',
                 'brandUrl' => Yii::$app->homeUrl,
@@ -34,19 +56,7 @@ AppAsset::register($this);
             ]);
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => [
-                    ['label' => 'Home', 'url' => ['/site/index']],
-                    ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']],
-					['label' => 'Roles (solo admins)', 'url' => ['/rol']],
-					['label' => 'Operaciones (solo admins)', 'url' => ['/operacion']],
-                    Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/site/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
-					
-                ],
+                'items' => $items
             ]);
             NavBar::end();
         ?>
