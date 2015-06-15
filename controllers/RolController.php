@@ -4,8 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use app\models\Rol;
 use app\models\RolSearch;
 use app\models\Operacion;
@@ -16,28 +14,6 @@ use app\controllers\BaseController;
  */
 class RolController extends BaseController {
 	
-    public function behaviors() {
-        return [
-			'access' => [
-                'class' => AccessControl::className(),
-				'only' => ['rol'],
-                'rules' => [
-                    [
-                        'actions' => ['rol'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Rol models.
      * @return mixed

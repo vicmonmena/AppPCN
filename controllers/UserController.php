@@ -4,8 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use app\models\User;
 use app\models\UserSearch;
 use app\controllers\BaseController;
@@ -15,28 +13,6 @@ use app\controllers\BaseController;
  * UserController implements the CRUD actions for User model.
  */
 class UserController extends BaseController {
-	
-    public function behaviors() {
-        return [
-			'access' => [
-                'class' => AccessControl::className(),
-				'only' => ['user'],
-                'rules' => [
-                    [
-                        'actions' => ['user'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all User models.

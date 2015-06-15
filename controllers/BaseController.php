@@ -4,47 +4,55 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use app\models\AccessHelpers;
 
 /**
  * BaseController implements common operations Controllers.
  */
-class BaseController extends Controller {
+class BaseController extends Controller implements IUtils{
 	
-	// Constantes que definen los roles de un usuario
-	const ROLE_USER = 1;
-	const ROLE_ADMIN = 2;
-	const ROLE_SUPERUSER = 3;
+	public function behaviors() {
+		return [
+			'access' => [
+				'class' => \yii\filters\AccessControl::className(),
+				'only' => ['index', 'view','create', 'update', 'delete'],
+				'rules' => [
+					[
+						'actions' => ['index', 'create', 'view', 'update', 'delete'],
+						'allow' => true,
+						'roles' => ['@'],
+						'matchCallback' => function ($rule, $action) {
+							$valid_roles = [self::ROLE_ADMIN, self::ROLE_SUPERUSER];
+							return self::roleInArray($valid_roles) && self::isActive();
+						}
+					],
+				],
+			],
+			'verbs' => [
+				'class' => VerbFilter::className(),
+				'actions' => [
+					'delete' => ['post'],
+				],
+			],
+		];
+	}
 	
-	/*
-	 * Este método se ejecuta antes que cualquier acción del controlador, 
-	 * a continuación de todos los filtros existentes 
-	 * (como los que se encuentran en el método behaviors).
+	/**
+	 * Comprueba si el rol del usuario logado está 
+	 * entre los roles pasados por parámetro.
 	 */
-	public function beforeAction($action) {
-		
-		if (!parent::beforeAction($action)) {
-			return false;
-		} 
-	 
-		$operacion = str_replace("/", "-", Yii::$app->controller->route);
-	 
-		$permitirSiempre = ['site-captcha', 'site-signup','site-index', 
-			'site-about', 'site-error', 'site-contact', 'site-login', 'site-logout'];
-	 
-		if (in_array($operacion, $permitirSiempre)) {
-			return true;
-		}
-	 
-		$operacion = str_replace("-index", "", $operacion);
-		
-		Yii::trace('SiteController::behaviors - ' . $operacion);
-		if (!AccessHelpers::getAcceso($operacion)) {
-			echo $this->render('/site/nopermitido');
-			return false;
-		}
-	 
-		return true;
+	public static function roleInArray($arr_role) {
+		$isInArray =  in_array(Yii::$app->user->identity->rol_id, $arr_role);
+		return in_array(Yii::$app->user->identity->rol_id, $arr_role);
+	}
+	
+	/**
+	 * Comprueba si el usuario logado tiene estado ACTIVO
+	 */
+	public static function isActive() {
+		return Yii::$app->user->identity->status == self::STATUS_ACTIVE;
 	}
 	
 	/**
