@@ -58,7 +58,7 @@ class BaseController extends Controller implements IUtils{
 	/**
 	 * Comprueba si un usuario tiene el rol $role.
 	 */
-	public function isRol($role) {
+	public static function isRol($role) {
 		// return $this->hasOne(Rol::className(), ['id' => 'rol_id']);
 		return Yii::$app->user->identity->rol_id == $role;
 	}

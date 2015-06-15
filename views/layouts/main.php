@@ -30,19 +30,21 @@ AppAsset::register($this);
 			$items = [
 				['label' => 'Home', 'url' => ['/site/index']],
                     ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']],					
+                    ['label' => 'Contact', 'url' => ['/site/contact']]
 			];
 			if (Yii::$app->user->isGuest) {
 				array_push($items,['label' => 'Login', 'url' => ['/site/login']]);
 			} else {
-				
 				if (BaseController::isAdmin()) {
 					array_push($items, 
 						['label' => 'Usuarios', 'url' => ['/user']],
 						['label' => 'Roles', 'url' => ['/rol']],
 						['label' => 'Operaciones', 'url' => ['/operacion']]
 					);
+				} else if (BaseController::isRol(BaseController::ROLE_NOTIFICADOR)) {
+					array_push($items, ['label' => 'Notificar', 'url' => ['/site/notify']]);
 				}
+				
 				array_push($items, ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
 					'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']]
 				);

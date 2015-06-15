@@ -12,6 +12,7 @@ use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
+use app\models\NotifyForm;
 use app\models\User;
 use app\controllers\BaseController;
 
@@ -43,6 +44,15 @@ class SiteController extends BaseController {
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+					[
+						'actions' => ['notify'],
+						'allow' => true,
+						'roles' => ['@'],
+						'matchCallback' => function ($rule, $action) {
+							$valid_roles = [self::ROLE_NOTIFICADOR];
+							return self::roleInArray($valid_roles) && self::isActive();
+						}
+					],
                 ],
             ],
             'verbs' => [
@@ -77,7 +87,14 @@ class SiteController extends BaseController {
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+			// Redireccionamos a una u otra página en función del ROL
+			if (self::isAdmin()) {
+				return Yii::$app->runAction('user/index');
+			} else if (self::isRol(self::ROLE_NOTIFICADOR)) {
+				return  self::actionNotify();
+			} else {
+				return self::actionLogin();
+			}
         } else {
             return $this->render('login', [
                 'model' => $model,
@@ -87,8 +104,7 @@ class SiteController extends BaseController {
 
     public function actionLogout() {
         Yii::$app->user->logout();
-
-        return $this->goHome();
+		return self::actionLogin();
     }
 
     public function actionContact() {
@@ -157,4 +173,20 @@ class SiteController extends BaseController {
             'model' => $model,
         ]);
     }
+	
+	public function actionNotify() {
+		$model = new NotifyForm();
+
+		if ($model->load(Yii::$app->request->post())) {
+			if ($model->validate()) {
+				// form inputs are valid, do something here
+				return;
+			}
+		}
+
+		return $this->render('notify', [
+			'model' => $model,
+		]);
+	}
+
 }
