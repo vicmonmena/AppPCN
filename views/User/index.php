@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use app\models\Rol;
+use app\controllers\IUtils;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
@@ -33,7 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
             //'password_hash',
             //'password_reset_token',
             'email:email',
-            'status',
+            [
+				'attribute' => 'status',
+				'value' => function($model) {
+					return $model->status == IUtils::STATUS_ACTIVE ?
+                    'Activo' : 'Inactivo';
+                },
+				'filter' => ArrayHelper::map(
+					[
+						['id' => IUtils::STATUS_DELETED, 'estado' => 'Inactivo'],
+						['id' => IUtils::STATUS_ACTIVE, 'estado' => 'Activo']
+					], 'id', 'estado'),
+			],
             // 'created_at',
             // 'updated_at',
             // 'rol_id',
