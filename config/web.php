@@ -21,12 +21,20 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => [
+		'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
             'useFileTransport' => true,
+			'viewPath' => '@app/mail',
+            'transport' => [
+				'class' => 'Swift_SmtpTransport',
+				'host' => '10.102.196.8',
+				'username' => 'vicente.montanomena@telefonica.com',
+				'password' => 'Vmm12345',
+			],
+			'messageConfig' => [
+                'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails
+                'charset' => 'UTF-8',
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

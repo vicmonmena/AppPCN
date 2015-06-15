@@ -20,4 +20,14 @@ class NotifyForm extends Model {
             [['email'], 'required'],
         ];
     }
+	
+	public function sendNotification() {
+		return \Yii::$app->mailer->compose()
+			->setFrom('appweb@email.com')
+			->setTo($this->email)
+			->setSubject('Email de prueba ' . \Yii::$app->name)
+			->setTextBody('Esto es un email de prueba')
+			->setHtmlBody('<b>Esto es un email de prueba</b>')
+			->send();
+	}
 }

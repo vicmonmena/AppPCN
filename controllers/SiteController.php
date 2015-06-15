@@ -179,8 +179,13 @@ class SiteController extends BaseController {
 
 		if ($model->load(Yii::$app->request->post())) {
 			if ($model->validate()) {
-				// form inputs are valid, do something here
-				return;
+				if ($model->sendNotification()) {
+					Yii::$app->getSession()->setFlash('success', 'Se ha enviado un email a ' . $model->email);
+					return $this->goHome();
+				} else {
+					Yii::$app->getSession()->setFlash('success', 'No se ha enviado el email ');
+					return $this->actionNotify();
+				}
 			}
 		}
 
