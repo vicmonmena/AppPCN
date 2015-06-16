@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use app\models\Rol;
+use app\models\Proceso;
+use app\models\Empresa;
 use app\controllers\IUtils;
 
 /* @var $this yii\web\View */
@@ -30,10 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'id',
             'username',
+			'name',
+			'surname',
             //'auth_key',
             //'password_hash',
             //'password_reset_token',
             'email:email',
+			'phone',
+			'mobile',
             [
 				'attribute' => 'status',
 				'value' => function($model) {
@@ -56,6 +62,22 @@ $this->params['breadcrumbs'][] = $this->title;
 					return $role->name;
                 },
 				'filter' => ArrayHelper::map(Rol::find()->all(), 'id', 'name'),
+			],
+			[
+				'attribute' => 'proceso_id',
+				'value' => function($model) {
+                    $proceso = Proceso::findOne($model->proceso_id);
+					return $proceso->name;
+                },
+				'filter' => ArrayHelper::map(Proceso::find()->all(), 'id', 'name'),
+			],
+			[
+				'attribute' => 'empresa_id',
+				'value' => function($model) {
+                    $empresa = Empresa::findOne($model->empresa_id);
+					return $empresa->name;
+                },
+				'filter' => ArrayHelper::map(Empresa::find()->all(), 'id', 'name'),
 			],
 
             ['class' => 'yii\grid\ActionColumn'],

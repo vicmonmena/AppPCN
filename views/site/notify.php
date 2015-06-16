@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use app\models\Ubicacion;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\NotifyForm */
@@ -17,9 +19,15 @@ use yii\widgets\ActiveForm;
     </div>
 	<div class="body-content">
 		<?php $form = ActiveForm::begin(); ?>
-
-			<?= $form->field($model, 'email') ?>
-		
+			<p>
+			<?= $form->field($model, 'subject') ?>
+			</p>
+			<p>
+			<?= $form->field($model, 'location')
+				->dropDownList(ArrayHelper::map(Ubicacion::find()->all(), 'id', 'name'))
+				->label(false)
+			?>
+			</p>
 			<div class="form-group">
 				<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>
 			</div>

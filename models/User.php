@@ -8,6 +8,8 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
 use app\models\Rol;
+use app\models\Proceso;
+use app\models\Empresa;
 use app\controllers\IUtils;
 
 /**
@@ -24,6 +26,12 @@ use app\controllers\IUtils;
  * @property integer $updated_at
  * @property string $password write-only password
  * @property integer $rol_id
+ * @property integer $proceso_id
+ * @property integer $empresa_id
+ * @property string $name
+ * @property string $surname
+ * @property string $phone
+ * @property string $mobile
  */
 class User extends ActiveRecord implements IdentityInterface {
 	
@@ -57,11 +65,12 @@ class User extends ActiveRecord implements IdentityInterface {
         return [
             ['status', 'default', 'value' => IUTils::STATUS_ACTIVE],
             ['status', 'in', 'range' => [IUTils::STATUS_ACTIVE, IUTils::STATUS_DELETED]],
-			[['username', 'auth_key', 'password_hash', 'email'], 'required'],
-			[['status', 'rol_id'], 'integer'],
+			[['username', 'name', 'surname', 'mobile', 'auth_key', 'password_hash', 'email'], 'required'],
+			[['status', 'rol_id', 'proceso_id', 'empresa_id'], 'integer'],
 			[['created_at', 'updated_at'], 'safe'],
 			[['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
-			[['auth_key'], 'string', 'max' => 32]
+			[['auth_key'], 'string', 'max' => 32],
+			[['name', 'surname', 'phone', 'mobile'], 'string', 'max' => 32],
         ];
     }
 
@@ -77,6 +86,12 @@ class User extends ActiveRecord implements IdentityInterface {
            'created_at' => Yii::t('app', 'Created At'),
            'updated_at' => Yii::t('app', 'Updated At'),
            'rol_id' => Yii::t('app', 'Rol ID'),
+		   'empresa_id' => Yii::t('app', 'Empresa'),
+		   'proceso_id' => Yii::t('app', 'Proceso'),
+		   'name' => Yii::t('app', 'Name'),
+		   'surname' => Yii::t('app', 'Surname'),
+		   'phone' => Yii::t('app', 'Phone'),
+		   'mobile' => Yii::t('app', 'Mobile'),
        ];
 	}
     /**
@@ -197,7 +212,24 @@ class User extends ActiveRecord implements IdentityInterface {
         $this->password_reset_token = null;
     }
 	
+	/**
+	 * Obtiene el ROL del usuario.
+	 */
 	public function getRol() {
 			return $this->hasOne(Rol::className(), ['id' => 'rol_id']);
+	}
+	
+	/**
+	 * Obtiene el PROCESO del usuario.
+	 */
+	public function getProceso() {
+			return $this->hasOne(Proceso::className(), ['id' => 'proceso_id']);
+	}
+	
+	/**
+	 * Obtiene la EMPRESA del usuario.
+	 */
+	public function getEmpresa() {
+			return $this->hasOne(Empresa::className(), ['id' => 'empresa_id']);
 	}
 }
