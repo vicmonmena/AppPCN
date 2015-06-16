@@ -77,7 +77,8 @@ class SiteController extends BaseController {
     }
 
     public function actionIndex() {
-        return $this->render('index');
+        $model = new CodeForm();
+		return $this->render('index', ['model' => $model,]);
     }
 
     public function actionLogin() {
@@ -174,6 +175,9 @@ class SiteController extends BaseController {
         ]);
     }
 	
+	/**
+	 * Recoge los datos para notificar una incidencia y envía un email con al información.
+	 */
 	public function actionNotify() {
 		$model = new NotifyForm();
 
@@ -183,7 +187,7 @@ class SiteController extends BaseController {
 					Yii::$app->getSession()->setFlash('success', 'Se ha enviado un email a ' . Yii::$app->params['toEmail']);
 					// return $this->goHome();
 				} else {
-					Yii::$app->getSession()->setFlash('success', 'No se ha enviado el email ');
+					Yii::$app->getSession()->setFlash('fail', 'No se ha enviado el email ');
 					return $this->actionNotify();
 				}
 			}
@@ -194,4 +198,41 @@ class SiteController extends BaseController {
 		]);
 	}
 
+	/*
+	 * Recoge el código pasado como parámetro en la url,
+	 * lo valida y devuelve una respuesta.
+	 */
+	public function actionCodelogin($code) {
+		
+		$model = new CodeForm();
+		if (isset($code)) {
+			// Parámetro por URL
+			Yii::trace('Codigo URL: ' . $code);	
+			if ($model->checkCode($code)) {
+				return $this->render('index', ['model' => $model, 'msg' => 'Código válido']);
+			} else {
+				return $this->render('index', ['model' => $model, 'msg' => 'Código no válido']);
+			}
+		} else {
+			return $this->render('index', ['model' => $model]);
+		}
+	}
+	
+	/* 
+	 * Recoge el código introducido en el formulario, 
+	 * lo valida y devuelve una respuesta.
+	 */
+	public function actionCode() {
+		$model = new CodeForm();
+		if ($model->load(Yii::$app->request->post())) {
+			Yii::trace('Codigo: ' . $model->code);	
+			if ($model->checkCode($model->code)) {
+				return $this->render('index', ['model' => $model, 'msg' => 'Código válido']);
+			} else {
+				return $this->render('index', ['model' => $model, 'msg' => 'Código no válido']);
+			}
+		} else {
+			return $this->render('index', ['model' => $model]);
+		}
+	}
 }
