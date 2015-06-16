@@ -12,9 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 	<?php
-		$opciones = \yii\helpers\ArrayHelper::map($tipoOperaciones, 'id', 'nombre');
+		$opciones = \yii\helpers\ArrayHelper::map($tipoOperaciones, 'id', 'name');
 		echo $form->field($model, 'operaciones')->checkboxList($opciones, ['unselect'=>NULL]);
 	?>
     <div class="form-group">

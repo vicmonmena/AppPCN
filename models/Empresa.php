@@ -7,20 +7,20 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "operacion".
+ * This is the model class for table "empresa".
  *
  * @property integer $id
  * @property string $name
+ * @property string $web
  * @property string $create_time
  * @property string $update_time
  */
-class Operacion extends ActiveRecord {
-    
-	/**
+class Empresa extends ActiveRecord {
+    /**
      * @inheritdoc
      */
     public static function tableName() {
-        return 'operacion';
+        return 'empresa';
     }
 
     /**
@@ -28,9 +28,9 @@ class Operacion extends ActiveRecord {
      */
     public function rules() {
         return [
-            [['name'], 'required'],
-            [['name'], 'string', 'max' => 64],
-			[['create_time', 'update_time'], 'safe'],
+            [['name', 'web'], 'required'],
+            [['create_time', 'update_time'], 'safe'],
+            [['name', 'web'], 'string', 'max' => 255]
         ];
     }
 
@@ -41,12 +41,13 @@ class Operacion extends ActiveRecord {
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-			'create_time' => Yii::t('app', 'Create Time'),
+            'web' => Yii::t('app', 'Web'),
+            'create_time' => Yii::t('app', 'Create Time'),
             'update_time' => Yii::t('app', 'Update Time'),
         ];
     }
 	
-		/**
+	/**
      * @inheritdoc
      */
     public function behaviors() {
@@ -55,7 +56,7 @@ class Operacion extends ActiveRecord {
                 'class'      => 'yii\behaviors\TimestampBehavior',
                 'value'      => new Expression('NOW()'),
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'crate_time',
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'create_time',
 					ActiveRecord::EVENT_BEFORE_UPDATE => 'update_time'
                 ],
             ],

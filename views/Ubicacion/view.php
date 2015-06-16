@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Operacion */
+/* @var $model app\models\Ubicacion */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Operacions'), 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ubicacions'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="operacion-view">
+<div class="ubicacion-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -28,8 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            
+            'id',
             'name',
+            'create_time',
+            'update_time',
         ],
     ]) ?>
 

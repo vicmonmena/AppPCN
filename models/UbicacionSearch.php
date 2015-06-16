@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Rol;
+use app\models\Ubicacion;
 
 /**
- * RolSearch represents the model behind the search form about `app\models\Rol`.
+ * UbicacionSearch represents the model behind the search form about `app\models\Ubicacion`.
  */
-class RolSearch extends Rol
+class UbicacionSearch extends Ubicacion
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class RolSearch extends Rol
     {
         return [
             [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'create_time', 'update_time'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class RolSearch extends Rol
      */
     public function search($params)
     {
-        $query = Rol::find();
+        $query = Ubicacion::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,6 +57,8 @@ class RolSearch extends Rol
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'create_time' => $this->create_time,
+            'update_time' => $this->update_time,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

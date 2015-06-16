@@ -35,7 +35,7 @@ use app\controllers\IUtils;
 	
 	<?= $form->field($model, 'rol_id') 
 		->dropDownList(
-			ArrayHelper::map(Rol::find()->all(), 'id', 'nombre'))
+			ArrayHelper::map(Rol::find()->all(), 'id', 'name'))
 	?>	
 
     <div class="form-group">

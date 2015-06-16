@@ -23,7 +23,7 @@ class NotifyForm extends Model {
 	
 	public function sendNotification() {
 		return \Yii::$app->mailer->compose()
-			->setFrom('appweb@email.com')
+			->setFrom(Yii::$app->params['adminEmail'])
 			->setTo($this->email)
 			->setSubject('Email de prueba ' . \Yii::$app->name)
 			->setTextBody('Esto es un email de prueba')

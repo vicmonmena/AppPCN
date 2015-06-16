@@ -53,9 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'rol_id',
 				'value' => function($model) {
                     $role = Rol::findOne($model->rol_id);
-					return $role->nombre;
+					return $role->name;
                 },
-				'filter' => ArrayHelper::map(Rol::find()->all(), 'id', 'nombre'),
+				'filter' => ArrayHelper::map(Rol::find()->all(), 'id', 'name'),
 			],
 
             ['class' => 'yii\grid\ActionColumn'],
