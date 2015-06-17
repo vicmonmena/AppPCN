@@ -101,6 +101,13 @@ class User extends ActiveRecord implements IdentityInterface {
         return static::findOne(['id' => $id, 'status' => IUTils::STATUS_ACTIVE]);
     }
 
+	/**
+     * @inheritdoc
+     */
+    public static function findByID($id) {
+        return static::findOne(['id' => $id]);
+    }
+	
     /**
      * @inheritdoc
      */
@@ -134,6 +141,17 @@ class User extends ActiveRecord implements IdentityInterface {
             'status' => IUTils::STATUS_ACTIVE,
         ]);
     }
+	
+	/**
+	 * Devuelve los usuarios ACTIVOS con ROL = $role
+	 */
+	public static function findByRol($role) {
+		return static::findAll(
+			[
+				'rol_id' => $role, 
+				'status' => IUTils::STATUS_ACTIVE
+			]);
+	}
 
     /**
      * Finds out if password reset token is valid

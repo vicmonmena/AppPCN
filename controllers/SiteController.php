@@ -195,17 +195,23 @@ class SiteController extends BaseController {
 	public function actionNotify() {
 		$model = new NotifyForm();
 
+		
 		if ($model->load(Yii::$app->request->post())) {
+			$alert = 'danger'; //danger, success, info
+			$msg = 'Se ha producido un error al generar la notificación';
 			if ($model->validate()) {
-				$alert = 'danger'; //danger, success, info
-				$msg = 'No se ha enviado el email';
-				if ($model->sendNotification()) {
-					$alert = 'success';
-					$msg = 'Se ha enviado un email a ' . Yii::$app->params['toEmail'];
+				$msg = 'Error creando la notificación';
+				if ($model->createNotification(Yii::$app->user->identity)) {
+					$msg = 'No se ha enviado el email';
+					if ($model->sendNotification()) {
+						$alert = 'success';
+						$msg = 'Se ha notificado a los directivos';
+					}
 				}
-				Yii::$app->getSession()->setFlash($alert, $msg);
 			}
+			Yii::$app->getSession()->setFlash($alert, $msg);
 		}
+		
 		return $this->render('notify', [
 			'model' => $model,
 		]);
@@ -220,11 +226,11 @@ class SiteController extends BaseController {
 		$model = new CodeForm();
 		if (isset($code)) {
 			// Parámetro por URL
-			Yii::trace('Codigo URL: ' . $code);	
+			Yii::trace('Codigo URL: ' . $code);
 			$msg = 'Código no válido';
 			$notificacion = $model->loginByCode($model->code);
 			if ($notificacion != null) {
-				$msg = 'Cödigo válido';
+				$msg = 'Código válido';
 				loadNotificacion($notificacion);
 			}
 			Yii::$app->getSession()->setFlash('success', $msg);

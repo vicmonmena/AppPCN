@@ -33,7 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'subject',
 			[
 				'attribute' => 'ubicacion_id',
-				'value' => Ubicacion::findOne($model->empresa_id)->name
+				'value' => Ubicacion::findOne($model->ubicacion_id)->name
+			],
+			[
+				'attribute' => 'user_id',
+				'value' => User::findOne($model->user_id)->name
 			],
             'create_time',
             'update_time',

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use app\models\Ubicacion;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\NotificacionSearch */
@@ -35,6 +36,14 @@ $this->params['breadcrumbs'][] = $this->title;
 					return $location->name;
                 },
 				'filter' => ArrayHelper::map(Ubicacion::find()->all(), 'id', 'name'),
+			],
+			[
+				'attribute' => 'user_id',
+				'value' => function($model) {
+                    $user = User::findOne($model->user_id);
+					return $user->username;
+                },
+				'filter' => ArrayHelper::map(User::find()->all(), 'id', 'username'),
 			],
             'create_time',
 

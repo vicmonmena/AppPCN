@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Ubicacion;
+use app\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Notificacion */
@@ -15,14 +16,17 @@ use app\models\Ubicacion;
 
     <?= $form->field($model, 'subject')->textInput(['maxlength' => true]) ?>
 
+	<?= $form->field($model, 'user_id') 
+		->dropDownList(
+			ArrayHelper::map(User::find()->all(), 'id', 'username'))
+	?>  
+		
     <?= $form->field($model, 'ubicacion_id') 
 		->dropDownList(
 			ArrayHelper::map(Ubicacion::find()->all(), 'id', 'name'))
 	?>
+	
 
-    <?= $form->field($model, 'create_time')->textInput() ?>
-
-    <?= $form->field($model, 'update_time')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

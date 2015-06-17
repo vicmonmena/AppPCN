@@ -18,10 +18,22 @@ class SignupForm extends Model {
 	 * Estado por defecto con el que se da de alta un usuario desde el formulario de altas.
 	 */
 	const DEFAULT_STATUS = 0;
+	/**
+	 * Proceso por defecto con el que se da de alta un usuario desde el formulario de alta.
+	 */
+	const DEFAULT_PROCESO = 1;
+	/**
+	 * Empresa por defecto con la que se da de alta un usuario desde el formulario de alta.
+	 */
+	const DEFAULT_EMPRESA = 1;
 	
 	public $username;
     public $email;
     public $password;
+	public $name;
+	public $surname;
+	public $phone;
+	public $mobile;
 
     /**
      * @inheritdoc
@@ -40,6 +52,17 @@ class SignupForm extends Model {
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+			
+			['name', 'required'],
+			['name', 'string', 'min' => 2, 'max' => 45],
+			
+			['surname', 'required'],
+			['surname', 'string', 'min' => 2, 'max' => 45],
+			
+			['phone', 'string', 'min' => 9, 'max' => 11],
+			
+			['mobile', 'required'],
+			['mobile', 'string', 'min' => 9, 'max' => 11],
         ];
     }
 
@@ -54,16 +77,20 @@ class SignupForm extends Model {
             $user = new User();
             $user->username = $this->username;
             $user->email = $this->email;
+			$user->name = $this->name;
+			$user->surname = $this->surname;
+			$user->phone = $this->phone;
+			$user->mobile = $this->mobile;
             $user->setPassword($this->password);
             $user->generateAuthKey();
 			$user->rol_id = self::DEFAULT_USER;
 			$user->status = self::DEFAULT_STATUS;
-            if ($user->save()) {
-				Yii::trace('Nuevo usuario: ' . $this->username);
-                return $user;
-            }
+			$user->proceso_id = self::DEFAULT_PROCESO;
+			$user->empresa_id = self::DEFAULT_EMPRESA;
+			if ($user->save()) {
+				return $user;
+			}
         }
-
         return null;
     }
 }

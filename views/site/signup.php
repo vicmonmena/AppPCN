@@ -20,6 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'username') ?>
                 <?= $form->field($model, 'email') ?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
+				<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>				
+				<?= $form->field($model, 'surname')->textInput(['maxlength' => true]) ?>
+				<?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+				<?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>

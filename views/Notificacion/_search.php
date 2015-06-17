@@ -21,6 +21,8 @@ use app\models\ubicacion;
     <?= $form->field($model, 'subject') ?>
 
     <?= $form->field($model, 'ubicacion_id') ?>
+	
+	<?= $form->field($model, 'user_id') ?>
 
     <?= $form->field($model, 'create_time') ?>
 
