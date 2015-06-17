@@ -94,6 +94,7 @@ class Rol extends ActiveRecord {
 	public function getRolOperaciones() {
 		return $this->hasMany(RolOperacion::className(), ['rol_id' => 'id']);
 	}
+	
 	/**
 	 * Este método señala la relación existente entre Rol y Operacion. 
 	 * Sin embargo, esa relación no es directa, 

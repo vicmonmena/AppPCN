@@ -17,8 +17,14 @@ use app\models\CodeForm;
 use app\models\User;
 use app\controllers\BaseController;
 
+/**
+ * Controlador inicial.
+ */
 class SiteController extends BaseController {
     
+	/**
+	 * Define los comportamientos para el acceso a las partes de la web. 
+	 */
 	public function behaviors(){
 		/*
 		 * ******************************
@@ -65,6 +71,9 @@ class SiteController extends BaseController {
         ];
     }
 
+	/**
+	 * Atiende las peticiones genéricas no definidas en ningún otro método.
+	 */
     public function actions() {
         return [
             'error' => [
@@ -77,11 +86,17 @@ class SiteController extends BaseController {
         ];
     }
 
+	/**
+	 * Atiende la petición para cargar la página HOME.
+	 */
     public function actionIndex() {
         $model = new CodeForm();
 		return $this->render('index', ['model' => $model,]);
     }
 
+	/**
+	 * Identifica el usuario en el sistema.
+	 */
     public function actionLogin() {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -89,13 +104,16 @@ class SiteController extends BaseController {
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			// Redireccionamos a una u otra página en función del ROL
+			// Redireccionamos en función del ROL
 			if (self::isAdmin()) {
-				return Yii::$app->runAction('user/index');
+				///Redirecciona a la administración de notificaciones
+				return Yii::$app->runAction('notificacion/index');
 			} else if (self::isRol(self::ROLE_NOTIFICADOR)) {
+				///Redirecciona al formulario de notificación de incidencias
 				return  self::actionNotify();
 			} else {
-				return self::actionLogin();
+				 //Redirecciona a la HOME
+				return $this->goHome();
 			}
         } else {
             return $this->render('login', [
@@ -104,28 +122,18 @@ class SiteController extends BaseController {
         }
     }
 
+	/**
+	 * Atiende la petición para salir de la sesión del usuario.
+	 */
     public function actionLogout() {
         Yii::$app->user->logout();
 		return self::actionLogin();
     }
-
-    public function actionContact() {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionAbout() {
-        return $this->render('about');
-    }
 	
+	/**
+	 * Atiende la petición para dar de alta un usuario
+	 * en el sistema desde el formulario de registro.
+	 */
 	public function actionSignup() {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
@@ -141,7 +149,10 @@ class SiteController extends BaseController {
         ]);
     }
 
-    public function actionRequestPasswordReset() {
+    /**
+	 * Atiende la petición para modificar el password del usuario.
+	 */
+	public function actionRequestPasswordReset() {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
@@ -152,14 +163,13 @@ class SiteController extends BaseController {
                 Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
             }
         }
-
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
     }
 
 	/**
-	 * 
+	 * Modifica el password del usuario.
 	 */
     public function actionResetPassword($token) {
         try {
@@ -212,8 +222,10 @@ class SiteController extends BaseController {
 			// Parámetro por URL
 			Yii::trace('Codigo URL: ' . $code);	
 			$msg = 'Código no válido';
-			if ($model->checkCode($code)) {
+			$notificacion = $model->loginByCode($model->code);
+			if ($notificacion != null) {
 				$msg = 'Cödigo válido';
+				loadNotificacion($notificacion);
 			}
 			Yii::$app->getSession()->setFlash('success', $msg);
 		}
@@ -229,11 +241,43 @@ class SiteController extends BaseController {
 		if ($model->load(Yii::$app->request->post())) {
 			Yii::trace('Codigo: ' . $model->code);
 			$msg = 'Código no válido';
-			if ($model->checkCode($model->code)) {
+			$notificacion = $model->loginByCode($model->code);
+			if ($notificacion != null) {
 				$msg = 'Código válido';
+				loadNotificacion($notificacion);
 			}
 			Yii::$app->getSession()->setFlash('success', $msg);
 		}
 		return $this->render('index', ['model' => $model]);
 	}
+	
+	/**
+	 * Carga los datos de notificación.
+	 */
+	private function loadNotificacion($notificacion) {
+		
+	}
+	
+	/**
+	 * Redirecciona a la página 'contact'.
+	 */
+    public function actionContact() {
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+            Yii::$app->session->setFlash('contactFormSubmitted');
+
+            return $this->refresh();
+        } else {
+            return $this->render('contact', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+	/**
+	 * Redirecciona a la página 'about'.
+	 */
+    public function actionAbout() {
+        return $this->render('about');
+    }
 }

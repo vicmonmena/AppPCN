@@ -23,14 +23,25 @@ class CodeForm extends Model {
 	
 	/**
 	 * 1. Busca el código en BBDD.
-	 * 2. Si no existe lo indica
-	 * 3. Si existe => extrae los datos del directivo.
-	 * 4. Se loga en el sistema: usr y pass del directivo del que extrae los datos.
-	 * 5. Muestra la información referente a la incidencia.
+	 * 2. Si NO existe lo indica => error
+	 * 3. Si existe => busca el usuario en BBDD
+	 * 4. Si NO existe => error 
+	 * 5. Si existe => Login
+	 * 6. Si Login OK => Devuelve notificación
+	 * 7. Si NO => error
      */
-    public function checkCode($mycode) {
-		
-		$pos = strpos($mycode, 'error');
-        return !($pos !== false);
+    public function loginByCode($code) {
+		$notificacion;
+		// TODO $found = Notificacion::findByCode($code);
+		// if ($found) => login
+		// 
+		// Login de usuario 
+		$user = User::findByUsername($this->username);
+        if ($user != null) {
+            if (Yii::$app->user->login($this->getUser(), 0)) {
+				// TODO if ()
+			}
+        }
+		return $notificacion;
     }
 }

@@ -1,7 +1,11 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\DetailView;
+use app\models\Rol;
+use app\models\Proceso;
+use app\models\Empresa;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -41,9 +45,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
             'created_at',
             'updated_at',
-            'rol_id',
-			'proceso_id',
-			'empresa_id',
+            [
+				'attribute' => 'rol_id',
+				'value' => Rol::findOne($model->rol_id)->name
+			],
+			[
+				'attribute' => 'proceso_id',
+				'value' => Proceso::findOne($model->proceso_id)->name
+			],
+			[
+				'attribute' => 'empresa_id',
+				'value' => Empresa::findOne($model->empresa_id)->name
+			]
         ],
     ]) ?>
 

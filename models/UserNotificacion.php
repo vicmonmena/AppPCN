@@ -5,22 +5,23 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use app\models\Notificacion;
 
 /**
- * This is the model class for table "ubicacion".
+ * This is the model class for table "user_notificacion".
  *
  * @property integer $id
- * @property string $name
- * @property string $create_time
- * @property string $update_time
+ * @property integer $from_user_id
+ * @property integer $to_user_id
+ * @property integer $notificacion_id
+ * @property integer $dispatched
+ * @property string $code
  */
-class Ubicacion extends ActiveRecord {
+class UserNotificacion extends ActiveRecord {
     /**
      * @inheritdoc
      */
     public static function tableName() {
-        return 'ubicacion';
+        return 'user_notificacion';
     }
 
     /**
@@ -28,9 +29,9 @@ class Ubicacion extends ActiveRecord {
      */
     public function rules() {
         return [
-            [['name'], 'required'],
-            [['create_time', 'update_time'], 'safe'],
-            [['name'], 'string', 'max' => 255]
+            [['from_user_id', 'to_user_id', 'notificacion_id', 'dispatched', 'code'], 'required'],
+            [['from_user_id', 'to_user_id', 'notificacion_id', 'dispatched'], 'integer'],
+            [['code'], 'string', 'max' => 255]
         ];
     }
 
@@ -40,9 +41,11 @@ class Ubicacion extends ActiveRecord {
     public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'create_time' => Yii::t('app', 'Create Time'),
-            'update_time' => Yii::t('app', 'Update Time'),
+            'from_user_id' => Yii::t('app', 'From User ID'),
+            'to_user_id' => Yii::t('app', 'To User ID'),
+            'notificacion_id' => Yii::t('app', 'Notificacion ID'),
+            'dispatched' => Yii::t('app', 'Dispatched'),
+            'code' => Yii::t('app', 'Code'),
         ];
     }
 	
@@ -61,8 +64,4 @@ class Ubicacion extends ActiveRecord {
             ],
         ];
     }
-	
-	public function getNotificaciones() {
-			return $this->hasMany(Notificacion::className(), ['ubicacion_id' => 'id']);
-	}
 }

@@ -42,7 +42,8 @@ AppAsset::register($this);
 						['label' => 'Operaciones', 'url' => ['/operacion']],
 						['label' => 'Ubicaciones', 'url' => ['/ubicacion']],
 						['label' => 'Procesos', 'url' => ['/proceso']],
-						['label' => 'Empresas', 'url' => ['/empresa']]
+						['label' => 'Empresas', 'url' => ['/empresa']],
+						['label' => 'Notificacion', 'url' => ['/notificacion']]
 					);
 				} else if (BaseController::isRol(BaseController::ROLE_NOTIFICADOR)) {
 					array_push($items, ['label' => 'Notificar', 'url' => ['/site/notify']]);
