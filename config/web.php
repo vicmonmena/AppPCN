@@ -28,8 +28,8 @@ $config = [
             'transport' => [
 				'class' => 'Swift_SmtpTransport',
 				'host' => '10.102.196.8',
-				'username' => 'vicente.montanomena@telefonica.com',
-				'password' => 'Vmm12345',
+				'username' => 'email@email.com',
+				'password' => '***',
 			],
 			'messageConfig' => [
                 'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails
