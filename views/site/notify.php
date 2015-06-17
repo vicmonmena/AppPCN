@@ -32,5 +32,10 @@ use app\models\Ubicacion;
 				<?= Html::submitButton(Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>
 			</div>
 		<?php ActiveForm::end(); ?>
+		<?php
+		foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+			echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
+		} 
+		?>
 	</div>
 </div><!-- notify -->

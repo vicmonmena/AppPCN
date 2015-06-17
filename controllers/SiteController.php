@@ -13,6 +13,7 @@ use app\models\ResetPasswordForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
 use app\models\NotifyForm;
+use app\models\CodeForm;
 use app\models\User;
 use app\controllers\BaseController;
 
@@ -157,6 +158,9 @@ class SiteController extends BaseController {
         ]);
     }
 
+	/**
+	 * 
+	 */
     public function actionResetPassword($token) {
         try {
             $model = new ResetPasswordForm($token);
@@ -183,16 +187,15 @@ class SiteController extends BaseController {
 
 		if ($model->load(Yii::$app->request->post())) {
 			if ($model->validate()) {
+				$alert = 'danger'; //danger, success, info
+				$msg = 'No se ha enviado el email';
 				if ($model->sendNotification()) {
-					Yii::$app->getSession()->setFlash('success', 'Se ha enviado un email a ' . Yii::$app->params['toEmail']);
-					// return $this->goHome();
-				} else {
-					Yii::$app->getSession()->setFlash('fail', 'No se ha enviado el email ');
-					return $this->actionNotify();
+					$alert = 'success';
+					$msg = 'Se ha enviado un email a ' . Yii::$app->params['toEmail'];
 				}
+				Yii::$app->getSession()->setFlash($alert, $msg);
 			}
 		}
-
 		return $this->render('notify', [
 			'model' => $model,
 		]);
@@ -203,19 +206,18 @@ class SiteController extends BaseController {
 	 * lo valida y devuelve una respuesta.
 	 */
 	public function actionCodelogin($code) {
-		
+
 		$model = new CodeForm();
 		if (isset($code)) {
 			// Parámetro por URL
 			Yii::trace('Codigo URL: ' . $code);	
+			$msg = 'Código no válido';
 			if ($model->checkCode($code)) {
-				return $this->render('index', ['model' => $model, 'msg' => 'Código válido']);
-			} else {
-				return $this->render('index', ['model' => $model, 'msg' => 'Código no válido']);
+				$msg = 'Cödigo válido';
 			}
-		} else {
-			return $this->render('index', ['model' => $model]);
+			Yii::$app->getSession()->setFlash('success', $msg);
 		}
+		return $this->render('index', ['model' => $model]);
 	}
 	
 	/* 
@@ -225,14 +227,13 @@ class SiteController extends BaseController {
 	public function actionCode() {
 		$model = new CodeForm();
 		if ($model->load(Yii::$app->request->post())) {
-			Yii::trace('Codigo: ' . $model->code);	
+			Yii::trace('Codigo: ' . $model->code);
+			$msg = 'Código no válido';
 			if ($model->checkCode($model->code)) {
-				return $this->render('index', ['model' => $model, 'msg' => 'Código válido']);
-			} else {
-				return $this->render('index', ['model' => $model, 'msg' => 'Código no válido']);
+				$msg = 'Código válido';
 			}
-		} else {
-			return $this->render('index', ['model' => $model]);
+			Yii::$app->getSession()->setFlash('success', $msg);
 		}
+		return $this->render('index', ['model' => $model]);
 	}
 }

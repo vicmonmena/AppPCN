@@ -1,4 +1,8 @@
 <?php
+
+use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 $this->title = 'My Yii Application';
 ?>
@@ -7,13 +11,33 @@ $this->title = 'My Yii Application';
     <div class="jumbotron">
         <h1>Congratulations!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Input code</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
 
     <div class="body-content">
 
+		<p>
+		<?php $form = ActiveForm::begin([
+			'id' => 'inputcode-form', 
+			'method' => 'post',
+			'action' => ['code']
+		]);?>
+			<?= $form->field($model, 'code')
+				->textInput(array('placeholder' => Yii::t('app','Codigo')))
+				->label(false)
+			?>
+			<div class="form-group">
+				<?= Html::submitButton(Yii::t('app','Enviar'), ['class' => 'btn btn-primary', 'name' => 'inputcode-button']) ?>
+			</div>
+		<?php ActiveForm::end(); ?>
+		</p>
+		<?php
+		foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+			echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
+		} 
+		?>
+		<!--
         <div class="row">
             <div class="col-lg-4">
                 <h2>Heading</h2>
@@ -142,5 +166,6 @@ $this->title = 'My Yii Application';
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
             </div>
         </div>
+		-->
     </div>
 </div>
