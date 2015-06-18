@@ -14,7 +14,10 @@ use app\models\SignupForm;
 use app\models\ContactForm;
 use app\models\NotifyForm;
 use app\models\CodeForm;
+use app\models\AccionForm;
 use app\models\User;
+use app\models\Ubicacion;
+use app\models\Notificacion;
 use app\controllers\BaseController;
 
 /**
@@ -25,7 +28,7 @@ class SiteController extends BaseController {
 	/**
 	 * Define los comportamientos para el acceso a las partes de la web. 
 	 */
-	public function behaviors(){
+	public function behaviors() {
 		/*
 		 * ******************************
 		 * 'only' => ... significa que las reglas se aplicarán solo a las acciones logout, sigoout y about
@@ -57,6 +60,15 @@ class SiteController extends BaseController {
 						'roles' => ['@'],
 						'matchCallback' => function ($rule, $action) {
 							$valid_roles = [self::ROLE_NOTIFICADOR];
+							return self::roleInArray($valid_roles) && self::isActive();
+						}
+					],
+					[
+						'actions' => ['actions'],
+						'allow' => true,
+						'roles' => ['@'],
+						'matchCallback' => function ($rule, $action) {
+							$valid_roles = [self::ROLE_DIRECTIVO];
 							return self::roleInArray($valid_roles) && self::isActive();
 						}
 					],
@@ -178,7 +190,8 @@ class SiteController extends BaseController {
             throw new BadRequestHttpException($e->getMessage());
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+        if ($model->load(Yii::$app->request->post()) 
+				&& $model->validate() && $model->resetPassword()) {
             Yii::$app->getSession()->setFlash('success', 'New password was saved.');
 
             return $this->goHome();
@@ -190,12 +203,12 @@ class SiteController extends BaseController {
     }
 	
 	/**
-	 * Recoge los datos para notificar una incidencia y envía un email con al información.
+	 * Recoge los datos para notificar una incidencia y 
+	 * envía un email con al información.
 	 */
 	public function actionNotify() {
 		$model = new NotifyForm();
 
-		
 		if ($model->load(Yii::$app->request->post())) {
 			$alert = 'danger'; //danger, success, info
 			$msg = 'Se ha producido un error al generar la notificación';
@@ -203,6 +216,9 @@ class SiteController extends BaseController {
 				$msg = 'Error creando la notificación';
 				if ($model->createNotification(Yii::$app->user->identity)) {
 					$msg = 'No se ha enviado el email';
+					
+					// TODO Enviar email por cada userNotificacion creada
+					
 					if ($model->sendNotification()) {
 						$alert = 'success';
 						$msg = 'Se ha notificado a los directivos';
@@ -225,17 +241,9 @@ class SiteController extends BaseController {
 
 		$model = new CodeForm();
 		if (isset($code)) {
-			// Parámetro por URL
-			Yii::trace('Codigo URL: ' . $code);
-			$msg = 'Código no válido';
-			$notificacion = $model->loginByCode($model->code);
-			if ($notificacion != null) {
-				$msg = 'Código válido';
-				loadNotificacion($notificacion);
-			}
-			Yii::$app->getSession()->setFlash('success', $msg);
+			$model->code = $code;
+			return $this->loadNotificacion($model);
 		}
-		return $this->render('index', ['model' => $model]);
 	}
 	
 	/* 
@@ -245,31 +253,76 @@ class SiteController extends BaseController {
 	public function actionCode() {
 		$model = new CodeForm();
 		if ($model->load(Yii::$app->request->post())) {
-			Yii::trace('Codigo: ' . $model->code);
-			$msg = 'Código no válido';
-			$notificacion = $model->loginByCode($model->code);
-			if ($notificacion != null) {
-				$msg = 'Código válido';
-				loadNotificacion($notificacion);
-			}
-			Yii::$app->getSession()->setFlash('success', $msg);
+			return $this->loadNotificacion($model);
 		}
+	}
+	
+	/**
+	 * Comprueba el código de notificación y carga la información si existe. 
+	 */
+	private function loadNotificacion($model) {
+		Yii::trace('Codigo: ' . $model->code);
+		$userNotif = $model->loginByCode($model->code);
+		if ($userNotif != null) {
+			$notificacion = Notificacion::findByID($userNotif->notificacion_id);
+			if ($notificacion != null) {
+				
+				$modelAction = new AccionForm();
+				$modelAction->subject = $notificacion->subject;
+				$modelAction->location = Ubicacion::findByID($notificacion->ubicacion_id)->name;
+				
+				$personalDisponible = User::findByRol(self::ROLE_PERSONAL_CRITICO);
+				
+				return $this->render('actions', 
+					[
+						'model' => $modelAction,
+						'personalDisponible' => $personalDisponible,
+					]);
+			} else {
+				$msg = 'Se ha producido un error.';
+			}
+		} else {
+			$msg = 'No se localizan notificaciones con ese código.';
+		}
+		Yii::$app->getSession()->setFlash('danger', $msg);
 		return $this->render('index', ['model' => $model]);
 	}
 	
 	/**
-	 * Carga los datos de notificación.
+	 * Envía las notificaciones al personal crítico para 
+	 * que procedan en base a las indicaciones descritas.
 	 */
-	private function loadNotificacion($notificacion) {
-		
+	public function actionSend() {
+		$model = new AccionForm();
+		$personalDisponible = User::findByRol(self::ROLE_PERSONAL_CRITICO);
+		if ($model->load(Yii::$app->request->post())) {
+			$alert = 'danger';
+			$msg = 'Error notificando al personal crítico';
+			$userAccion = $model->createAccion(Yii::$app->user->identity);
+			if ($userAccion != null) {
+				$alert = 'success';
+				$msg = 'El personal seleccionado ha sido notificado.';
+				
+				// TODO Enviar email por cada userAccion creada
+			}
+			Yii::$app->getSession()->setFlash($alert, $msg);
+		}
+		return $this->render('actions', 
+			[
+				'model' => $model,
+				'personalDisponible' => $personalDisponible,
+			]);
 	}
+
+	// ****************************************************
 	
 	/**
 	 * Redirecciona a la página 'contact'.
 	 */
     public function actionContact() {
         $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+        if ($model->load(Yii::$app->request->post()) 
+				&& $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
 
             return $this->refresh();

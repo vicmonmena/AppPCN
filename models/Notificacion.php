@@ -76,6 +76,13 @@ class Notificacion extends ActiveRecord {
     }
 	
 	/**
+     * @inheritdoc
+     */
+    public static function findByID($id) {
+        return static::findOne(['id' => $id]);
+    }
+	
+	/**
 	 * Obtiene la UBICACION.
 	 */
 	public function getUbicacion() {

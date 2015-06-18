@@ -5,7 +5,6 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use app\models\User;
 
 /**
  * This is the model class for table "empresa".

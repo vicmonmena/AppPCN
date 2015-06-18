@@ -31,17 +31,19 @@ class CodeForm extends Model {
 	 * 7. Si NO => error
      */
     public function loginByCode($code) {
-		$notificacion;
-		// TODO $found = Notificacion::findByCode($code);
-		// if ($found) => login
-		// 
-		// Login de usuario 
-		$user = User::findByUsername($this->username);
-        if ($user != null) {
-            if (Yii::$app->user->login($this->getUser(), 0)) {
-				// TODO if ()
+		
+		// Comprobamos si existe la notificación y va dirijida al usuario logado
+		$userNotif = UserNotificacion::findByCodeAndUser(
+			$code, Yii::$app->user->identity->id);
+		
+		if ($userNotif != null) {
+			// Comprobamos si existe el usuario
+			$user = User::findByID($userNotif->to_user_id);
+			if ($user != null && Yii::$app->user->login($user, 0)) {
+				// Usuario logado
+				return $userNotif;
 			}
-        }
-		return $notificacion;
+		}
+		return null;
     }
 }

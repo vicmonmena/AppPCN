@@ -14,4 +14,5 @@ interface IUtils {
 	const ROLE_SUPERUSER = 3;
 	const ROLE_NOTIFICADOR = 4;
 	const ROLE_DIRECTIVO = 5;
+	const ROLE_PERSONAL_CRITICO = 6;
 }

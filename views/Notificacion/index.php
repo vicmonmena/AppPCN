@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'subject',
+			'create_time',
             [
 				'attribute' => 'ubicacion_id',
 				'value' => function($model) {
@@ -45,7 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
 				'filter' => ArrayHelper::map(User::find()->all(), 'id', 'username'),
 			],
-            'create_time',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

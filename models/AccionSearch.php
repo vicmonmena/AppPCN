@@ -10,8 +10,7 @@ use app\models\Accion;
 /**
  * AccionSearch represents the model behind the search form about `app\models\Accion`.
  */
-class AccionSearch extends Accion
-{
+class AccionSearch extends Accion {
     /**
      * @inheritdoc
      */
@@ -26,8 +25,7 @@ class AccionSearch extends Accion
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,8 +37,7 @@ class AccionSearch extends Accion
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Accion::find();
 
         $dataProvider = new ActiveDataProvider([

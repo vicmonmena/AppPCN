@@ -8,7 +8,7 @@ use yii\base\Model;
 /**
  * CodeForm is the model behind the Notify form.
  */
-class ActionForm extends Model {
+class AccionForm extends Model {
 	
 	// Información sobre la notificación
 	public $subject;
@@ -23,7 +23,7 @@ class ActionForm extends Model {
      */
     public function rules(){
         return [
-            [['code'], 'required'],
+            [['description', 'personalCritico'], 'required'],
         ];
     }
 	
@@ -50,4 +50,18 @@ class ActionForm extends Model {
 		}
 		return null;
     }
+	
+	/**
+	 * Da de alta la acción en la BBDD.
+	 */
+	public function createAccion($user) {
+		$accion = new Accion();
+		$accion->user_id = $user->id;
+		$accion->descripcion = $this->description;
+		
+		$accion->personalCritico = $this->personalCritico;
+		if ($accion->save()) {
+			return $accion;
+		}
+	}
 }

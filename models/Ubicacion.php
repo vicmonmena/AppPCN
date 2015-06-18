@@ -61,7 +61,17 @@ class Ubicacion extends ActiveRecord {
             ],
         ];
     }
+
+	/**
+     * @inheritdoc
+     */
+    public static function findByID($id) {
+        return static::findOne(['id' => $id]);
+    }
 	
+	/**
+	 * Obtiene le listado de notificaciones procucidas en esta ubicación.
+	 */
 	public function getNotificaciones() {
 			return $this->hasMany(Notificacion::className(), ['ubicacion_id' => 'id']);
 	}

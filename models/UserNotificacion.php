@@ -47,4 +47,18 @@ class UserNotificacion extends ActiveRecord {
             'code' => Yii::t('app', 'Code'),
         ];
     }
+	
+	/**
+     * @inheritdoc
+     */
+    public static function findByID($id) {
+        return static::findOne(['id' => $id]);
+    }
+	
+	/**
+     * @inheritdoc
+     */
+    public static function findByCodeAndUser($code, $user) {
+        return static::findOne(['code' => $code, 'to_user_id' => $user]);
+    }
 }

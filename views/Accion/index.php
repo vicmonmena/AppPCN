@@ -31,7 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'create_time',
             [
 				'attribute' => 'user_id',
-				'value' => User::findOne($model->rol_id)->username;
+				'value' => function($model) {
+                    $user = User::findOne($model->user_id);
+					return $user->username;
                 },
 				'filter' => ArrayHelper::map(User::find()->all(), 'id', 'username'),
 			],

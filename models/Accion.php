@@ -16,22 +16,23 @@ use yii\db\Expression;
  * @property integer $user_id
  */
 class Accion extends ActiveRecord {
+	
+	public $personalCritico;
+	
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'accion';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'descripcion', 'user_id'], 'required'],
-            [['id', 'user_id'], 'integer'],
+            [['descripcion', 'user_id'], 'required'],
+            [['user_id'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
             [['descripcion'], 'string', 'max' => 255]
         ];
@@ -86,6 +87,12 @@ class Accion extends ActiveRecord {
 	 * Almacena la relación usuario - acción
 	 */
 	public function afterSave($insert, $changedAttributes) {
-		// TODO
+		
+		foreach ($this->personalCritico as $personal) {
+			$userAccion = new UserAccion();
+			$userAccion->accion_id = $this->id;
+			$userAccion->to_user_id = $personal;
+			$userAccion->save();
+		}
 	}
 }
