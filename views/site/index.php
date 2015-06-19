@@ -24,11 +24,11 @@ $this->title = 'My Yii Application';
 			'action' => ['code']
 		]);?>
 			<?= $form->field($model, 'code')
-				->textInput(array('placeholder' => Yii::t('app','Codigo')))
+				->textInput(array('placeholder' => Yii::t('app','code')))
 				->label(false)
 			?>
 			<div class="form-group">
-				<?= Html::submitButton(Yii::t('app','Enviar'), ['class' => 'btn btn-primary', 'name' => 'inputcode-button']) ?>
+				<?= Html::submitButton(Yii::t('app','Submit'), ['class' => 'btn btn-primary', 'name' => 'inputcode-button']) ?>
 			</div>
 		<?php ActiveForm::end(); ?>
 		</p>

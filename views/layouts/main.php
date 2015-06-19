@@ -28,34 +28,34 @@ AppAsset::register($this);
         <?php
 			
 			$items = [
-				['label' => 'Home', 'url' => ['/site/index']],
-                    ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']]
+				['label' => Yii::t('app','Home'), 'url' => ['/site/index']],
+                    ['label' => Yii::t('app','About'), 'url' => ['/site/about']],
+                    ['label' => Yii::t('app','Contact'), 'url' => ['/site/contact']]
 			];
 			if (Yii::$app->user->isGuest) {
-				array_push($items,['label' => 'Login', 'url' => ['/site/login']]);
+				array_push($items,['label' => Yii::t('app','Login'), 'url' => ['/site/login']]);
 			} else {
 				if (BaseController::isAdmin()) {
 					array_push($items, 
-						['label' => 'Usuarios', 'url' => ['/user']],
-						['label' => 'Roles', 'url' => ['/rol']],
-						['label' => 'Operaciones', 'url' => ['/operacion']],
-						['label' => 'Ubicaciones', 'url' => ['/ubicacion']],
-						['label' => 'Procesos', 'url' => ['/proceso']],
-						['label' => 'Empresas', 'url' => ['/empresa']],
-						['label' => 'Notificacion', 'url' => ['/notificacion']],
-						['label' => 'Acciones', 'url' => ['/accion']]
+						['label' => Yii::t('app','User'), 'url' => ['/user']],
+						['label' => Yii::t('app','Rol'), 'url' => ['/rol']],
+						['label' => Yii::t('app','Operation'), 'url' => ['/operacion']],
+						['label' => Yii::t('app','Ubicacion'), 'url' => ['/ubicacion']],
+						['label' => Yii::t('app','Proceso'), 'url' => ['/proceso']],
+						['label' => Yii::t('app','Empresa'), 'url' => ['/empresa']],
+						['label' => Yii::t('app','Notificacion'), 'url' => ['/notificacion']],
+						['label' => Yii::t('app','Accion'), 'url' => ['/accion']]
 					);
 				} else if (BaseController::isRol(BaseController::ROLE_NOTIFICADOR)) {
 					array_push($items, ['label' => 'Notificar', 'url' => ['/site/notify']]);
 				}
 				
-				array_push($items, ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+				array_push($items, ['label' => Yii::t('app','Logout') . ' (' . Yii::$app->user->identity->username . ')',
 					'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']]
 				);
 			}
             NavBar::begin([
-                'brandLabel' => 'My Company',
+                'brandLabel' => Yii::t('app','PCN'),
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -78,7 +78,7 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+            <p class="pull-left">&copy; <?= Yii::t('app','right') ?> <?= date('Y') ?></p>
             <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
