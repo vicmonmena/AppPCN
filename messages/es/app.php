@@ -4,7 +4,7 @@ return [
 	'About' => 'Acerca de',
 	'Contact' => 'Contacto',
 	'PCN' => 'Plan de Continuidad de Negocio',
-	'Introduce codigo' => 'Introduce el código que debe haber recibido por SMS y/o Email',
+	'Introduce codigo' => 'Introduce el código que ha recibido por SMS y/o Email',
 	'right' => 'Todos los derechos reservados',
 	'Send' => 'Enviar',
 	'Submit' => 'Enviar',

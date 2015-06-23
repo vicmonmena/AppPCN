@@ -304,6 +304,14 @@ class SiteController extends BaseController {
 				$msg = 'El personal seleccionado ha sido notificado.';
 				
 				// TODO Enviar email por cada userAccion creada
+				$this->sendEmail(
+					Yii::$app->params['adminEmail'],
+					Yii::$app->params['toEmail'],
+					$model->subject,
+					$model->description
+				);
+
+				
 			}
 			Yii::$app->getSession()->setFlash($alert, $msg);
 		}
@@ -314,6 +322,15 @@ class SiteController extends BaseController {
 			]);
 	}
 
+	private function sendEmail($from, $to, $subject, $msg) {
+		Yii::$app->mailer->compose()
+		    ->setFrom($from)
+		    ->setTo($to)
+		    ->setSubject($subject)
+		    ->setTextBody($msg)
+		    ->setHtmlBody('<b>' . $msg . '</b>')
+		    ->send();
+	}
 	// ****************************************************
 	
 	/**

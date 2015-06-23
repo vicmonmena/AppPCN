@@ -18,7 +18,11 @@ use app\models\Ubicacion;
 
     </div>
 	<div class="body-content">
-		<?php $form = ActiveForm::begin(); ?>
+		<?php $form = ActiveForm::begin([
+			'id' => 'inputcode-form', 
+			'method' => 'post',
+			'action' => ['notify']
+		]);?>
 			<p>
 			<?= $form->field($model, 'subject') ?>
 			</p>

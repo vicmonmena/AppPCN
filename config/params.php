@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'adminEmail' => 'vicente.montanomena@telefonica.com',
+    'adminEmail' => 'vicmonmenadev@gmail.com',
 	'toEmail' => 'vicmonmena@gmail.com',
 ];

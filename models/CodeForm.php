@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\User;
 
 /**
  * CodeForm is the model behind the Notify form.
@@ -33,8 +34,7 @@ class CodeForm extends Model {
     public function loginByCode($code) {
 		
 		// Comprobamos si existe la notificación y va dirijida al usuario logado
-		$userNotif = UserNotificacion::findByCodeAndUser(
-			$code, Yii::$app->user->identity->id);
+		$userNotif = UserNotificacion::findByCode($code, Yii::$app->user->id);
 		
 		if ($userNotif != null) {
 			// Comprobamos si existe el usuario

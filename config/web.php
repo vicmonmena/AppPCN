@@ -28,9 +28,12 @@ $config = [
 			'viewPath' => '@app/mail',
             'transport' => [
 				'class' => 'Swift_SmtpTransport',
-				'host' => '10.102.196.8',
-				'username' => 'email@email.com',
-				'password' => '***',
+				'host' => 'smtp.gmail.com',
+                'port' => '587',
+                'encryption' => 'tls',
+				'username' => 'vicmonmenadev@gmail.com',
+				'password' => '200191804',
+                'SMTPAuth' => 'true',
 			],
 			'messageConfig' => [
                 'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails

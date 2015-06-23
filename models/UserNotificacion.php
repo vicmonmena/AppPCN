@@ -55,6 +55,13 @@ class UserNotificacion extends ActiveRecord {
         return static::findOne(['id' => $id]);
     }
 	
+    /**
+     * @inheritdoc
+     */
+    public static function findByCode($code) {
+        return static::findOne(['code' => $code]);
+    }
+
 	/**
      * @inheritdoc
      */

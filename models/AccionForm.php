@@ -38,8 +38,7 @@ class AccionForm extends Model {
      */
     public function loginByCode($code) {
 		// Comprobamos si existe la notificación y va dirijida al usuario logado
-		$userNotif = UserNotificacion::findByCodeAndUser(
-			$code, Yii::$app->user->identity->id);
+		$userNotif = UserNotificacion::findByCode($code);
 		if ($userNotif != null) {
 			// Comprobamos si existe el usuario
 			$user = User::findByID($userNotif->to_user_id);
