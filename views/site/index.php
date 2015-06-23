@@ -4,14 +4,14 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-$this->title = 'My Yii Application';
+$this->title = Yii::t('app','PCN');
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1><?=Yii::t('app','Bienvenido')?></h1>
 
-        <p class="lead">Input code</p>
+        <p class="lead"><?=Yii::t('app','Introduce codigo')?></p>
 
     </div>
 

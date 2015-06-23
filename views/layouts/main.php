@@ -37,14 +37,14 @@ AppAsset::register($this);
 			} else {
 				if (BaseController::isAdmin()) {
 					array_push($items, 
-						['label' => Yii::t('app','User'), 'url' => ['/user']],
-						['label' => Yii::t('app','Rol'), 'url' => ['/rol']],
-						['label' => Yii::t('app','Operation'), 'url' => ['/operacion']],
-						['label' => Yii::t('app','Ubicacion'), 'url' => ['/ubicacion']],
-						['label' => Yii::t('app','Proceso'), 'url' => ['/proceso']],
-						['label' => Yii::t('app','Empresa'), 'url' => ['/empresa']],
-						['label' => Yii::t('app','Notificacion'), 'url' => ['/notificacion']],
-						['label' => Yii::t('app','Accion'), 'url' => ['/accion']]
+						['label' => Yii::t('app','Users', 2), 'url' => ['/user']],
+						['label' => Yii::t('app','Roles'), 'url' => ['/rol']],
+						['label' => Yii::t('app','Operaciones'), 'url' => ['/operacion']],
+						['label' => Yii::t('app','Ubicaciones'), 'url' => ['/ubicacion']],
+						['label' => Yii::t('app','Procesos'), 'url' => ['/proceso']],
+						['label' => Yii::t('app','Empresas'), 'url' => ['/empresa']],
+						['label' => Yii::t('app','Notificaciones'), 'url' => ['/notificacion']],
+						['label' => Yii::t('app','Acciones'), 'url' => ['/accion']]
 					);
 				} else if (BaseController::isRol(BaseController::ROLE_NOTIFICADOR)) {
 					array_push($items, ['label' => 'Notificar', 'url' => ['/site/notify']]);

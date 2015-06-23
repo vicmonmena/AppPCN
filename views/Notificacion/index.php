@@ -10,7 +10,7 @@ use app\models\User;
 /* @var $searchModel app\models\NotificacionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Notificacions');
+$this->title = Yii::t('app', 'Notificaciones');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="notificacion-index">
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Notificacion'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'subject',
-			'create_time',
             [
 				'attribute' => 'ubicacion_id',
 				'value' => function($model) {
@@ -46,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
 				'filter' => ArrayHelper::map(User::find()->all(), 'id', 'username'),
 			],
-
+			'create_time',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

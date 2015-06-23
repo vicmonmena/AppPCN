@@ -19,7 +19,7 @@ class OperacionSearch extends Operacion
     {
         return [
             [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'create_time',], 'safe'],
         ];
     }
 
@@ -57,6 +57,8 @@ class OperacionSearch extends Operacion
 
         $query->andFilterWhere([
             'id' => $this->id,
+			'create_time' => $this->create_time,
+            'update_time' => $this->update_time,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

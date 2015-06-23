@@ -10,6 +10,13 @@ return [
 	'Logout' => 'Logout',
 	'Login' => 'Login',
 	
+	'Ayuda Login' => 'Please fill out the following fields to login:',
+	'Ayuda Sign up' => 'Please fill out the following fields to signup:',
+	'Ayuda reset password' => 'Please choose your new password:',
+	'Reset password' => 'Reset password',
+	'Request password reset' => 'Request password reset',
+	'Ayuda request password reset' => 'Please fill out your email. A link to reset password will be sent there.',
+	
 	// Barra de administración
 	'Empresa' => 'Company',
 	'Ubicación' => 'Location',

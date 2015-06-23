@@ -18,7 +18,7 @@ class NotificacionSearch extends Notificacion
     public function rules()
     {
         return [
-            [['id', 'ubicacion'], 'integer'],
+            [['id', 'ubicacion_id', 'user_id'], 'integer'],
             [['subject', 'create_time', 'update_time'], 'safe'],
         ];
     }
@@ -57,7 +57,8 @@ class NotificacionSearch extends Notificacion
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'ubicacion' => $this->ubicacion,
+            'ubicacion_id' => $this->ubicacion_id,
+			'user_id' => $this->user_id,
             'create_time' => $this->create_time,
             'update_time' => $this->update_time,
         ]);

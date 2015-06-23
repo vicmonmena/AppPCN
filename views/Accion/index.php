@@ -9,7 +9,7 @@ use app\models\User;
 /* @var $searchModel app\models\AccionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Accions');
+$this->title = Yii::t('app', 'Acciones');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="accion-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Accion'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -28,7 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'descripcion',
-            'create_time',
             [
 				'attribute' => 'user_id',
 				'value' => function($model) {
@@ -37,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
 				'filter' => ArrayHelper::map(User::find()->all(), 'id', 'username'),
 			],
-
+			'create_time',
+			
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
