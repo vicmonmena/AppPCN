@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use dosamigos\datepicker\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\UserSearch */
@@ -37,9 +38,29 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'status') ?>
 
-    <?php // echo $form->field($model, 'created_at') ?>
+    <?= $form->field($model, 'create_time')->widget(
+		DatePicker::className(), [
+			// inline too, not bad
+			 'inline' => true, 
+			 // modify template for custom rendering
+			'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
+			'clientOptions' => [
+				'autoclose' => true,
+				'format' => 'dd-M-yyyy'
+			]
+	]);?>
 
-    <?php // echo $form->field($model, 'updated_at') ?>
+    <?= $form->field($model, 'update_time')->widget(
+		DatePicker::className(), [
+			// inline too, not bad
+			 'inline' => true, 
+			 // modify template for custom rendering
+			'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
+			'clientOptions' => [
+				'autoclose' => true,
+				'format' => 'dd-M-yyyy'
+			]
+	]);?>
 
     <?php // echo $form->field($model, 'rol_id') ?>
 	

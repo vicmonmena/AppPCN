@@ -40,7 +40,7 @@ class Rol extends ActiveRecord {
         return [
 			[['name'], 'required'],
             [['name'], 'string', 'max' => 32],
-			[['create_time', 'update', 'operaciones'], 'safe'],
+			[['create_time', 'update_time', 'operaciones'], 'safe'],
 			
         ];
     }

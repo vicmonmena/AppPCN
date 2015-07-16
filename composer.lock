@@ -4,20 +4,81 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b1cc6c8c161c72bb689cfba0d4e1fd86",
+    "hash": "a966aa79f9885e3a337c16f87c67504e",
     "packages": [
         {
-            "name": "bower-asset/bootstrap",
-            "version": "v3.3.4",
+            "name": "2amigos/yii2-date-picker-widget",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "a10eb60bc0b07b747fa0c4ebd8821eb7307bd07f"
+                "url": "https://github.com/2amigos/yii2-date-picker-widget.git",
+                "reference": "89cd0d7f00785b608b4a9670016f2795f2e3984d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/a10eb60bc0b07b747fa0c4ebd8821eb7307bd07f",
-                "reference": "a10eb60bc0b07b747fa0c4ebd8821eb7307bd07f",
+                "url": "https://api.github.com/repos/2amigos/yii2-date-picker-widget/zipball/89cd0d7f00785b608b4a9670016f2795f2e3984d",
+                "reference": "89cd0d7f00785b608b4a9670016f2795f2e3984d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap-datepicker": "1.4.0",
+                "yiisoft/yii2": "~2.0.0",
+                "yiisoft/yii2-bootstrap": "~2.0.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "asset-installer-paths": {
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dosamigos\\datepicker\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "2amigOS! Consulting Group",
+                    "email": "hola@2amigos.us",
+                    "homepage": "http://2amigos.us",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Bootstrap DatePicker widget for Yii2.",
+            "homepage": "http://yiiwheels.com/extension/bootstrap-datepicker",
+            "keywords": [
+                "2amigos",
+                "datepicker",
+                "extension",
+                "widget",
+                "yii",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2015-04-02 11:48:05"
+        },
+        {
+            "name": "bower-asset/bootstrap",
+            "version": "v3.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/bootstrap.git",
+                "reference": "16b48259a62f576e52c903c476bd42b90ab22482"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/16b48259a62f576e52c903c476bd42b90ab22482",
+                "reference": "16b48259a62f576e52c903c476bd42b90ab22482",
                 "shasum": ""
             },
             "require": {
@@ -27,13 +88,7 @@
             "extra": {
                 "bower-asset-main": [
                     "less/bootstrap.less",
-                    "dist/css/bootstrap.css",
-                    "dist/js/bootstrap.js",
-                    "dist/fonts/glyphicons-halflings-regular.eot",
-                    "dist/fonts/glyphicons-halflings-regular.svg",
-                    "dist/fonts/glyphicons-halflings-regular.ttf",
-                    "dist/fonts/glyphicons-halflings-regular.woff",
-                    "dist/fonts/glyphicons-halflings-regular.woff2"
+                    "dist/js/bootstrap.js"
                 ],
                 "bower-asset-ignore": [
                     "/.*",
@@ -46,6 +101,9 @@
                     "test-infra"
                 ]
             },
+            "license": [
+                "MIT"
+            ],
             "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
             "keywords": [
                 "css",
@@ -56,6 +114,37 @@
                 "mobile-first",
                 "responsive",
                 "web"
+            ]
+        },
+        {
+            "name": "bower-asset/bootstrap-datepicker",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eternicode/bootstrap-datepicker.git",
+                "reference": "e7ca6bb94dc483817f2ff10fc2b723b2b935e016"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eternicode/bootstrap-datepicker/zipball/e7ca6bb94dc483817f2ff10fc2b723b2b935e016",
+                "reference": "e7ca6bb94dc483817f2ff10fc2b723b2b935e016",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap": ">=2.0.4,<4.0",
+                "bower-asset/jquery": ">=1.7.1"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/css/bootstrap-datepicker.css",
+                    "dist/css/bootstrap-datepicker3.css",
+                    "js/bootstrap-datepicker.js"
+                ],
+                "bower-asset-ignore": []
+            },
+            "license": [
+                "Apache-2.0"
             ]
         },
         {
@@ -374,16 +463,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.4",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "726867caee3f23aa7a6975c801e64b6021e14f86"
+                "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/726867caee3f23aa7a6975c801e64b6021e14f86",
-                "reference": "726867caee3f23aa7a6975c801e64b6021e14f86",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
+                "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
                 "shasum": ""
             },
             "require": {
@@ -458,7 +547,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2015-05-10 20:09:47"
+            "time": "2015-07-11 02:37:59"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
