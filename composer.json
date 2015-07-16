@@ -18,7 +18,11 @@
         "yiisoft/yii2": ">=2.0.4",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-        "2amigos/yii2-date-picker-widget": "~1.0"
+        "2amigos/yii2-date-picker-widget": "~1.0",
+        "kartik-v/yii2-grid": "@dev",
+        "kartik-v/yii2-widget-activeform": "@dev",
+        "kartik-v/yii2-builder": "@dev",
+        "kartik-v/yii2-mpdf": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

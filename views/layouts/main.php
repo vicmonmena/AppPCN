@@ -49,9 +49,15 @@ AppAsset::register($this);
 				} else if (BaseController::isRol(BaseController::ROLE_NOTIFICADOR)) {
 					array_push($items, ['label' => 'Notificar', 'url' => ['/site/notify']]);
 				}
-				
-				array_push($items, ['label' => Yii::t('app','Logout') . ' (' . Yii::$app->user->identity->username . ')',
-					'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']]
+					
+				array_push($items, 
+					array(
+						'label' => Yii::$app->user->identity->username, 
+						'items' => array(
+							array ('label' => Yii::t('app','Profile'),'url' => ['/site/profile'], 'linkOptions' => ['data-method' => 'post']),
+							array ('label' => Yii::t('app','Logout'),'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']),
+						)
+					)
 				);
 			}
             NavBar::begin([
