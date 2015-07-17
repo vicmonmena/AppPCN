@@ -6,13 +6,15 @@ use yii\widgets\ActiveForm;
 use app\models\Proceso;
 use app\controllers\IUtils;
 
-$this->title = Yii::t('app', 'Mis Datos') .  ' ' . Yii::t('app', '{modelClass}: ', ['modelClass' => 'User',]) . ' ' . $model->username;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->title = Yii::t('app', 'Mis Datos');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="user-update">
+<div class="site-profile">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -38,5 +40,9 @@ $this->title = Yii::t('app', 'Mis Datos') .  ' ' . Yii::t('app', '{modelClass}: 
 		</div>
 
     <?php ActiveForm::end(); ?>
-
+	<?php
+		foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+			echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
+		} 
+	?>
 </div>

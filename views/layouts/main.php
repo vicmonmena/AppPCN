@@ -29,11 +29,16 @@ AppAsset::register($this);
 			
 			$items = [
 				['label' => Yii::t('app','Home'), 'url' => ['/site/index']],
-                    ['label' => Yii::t('app','About'), 'url' => ['/site/about']],
-                    ['label' => Yii::t('app','Contact'), 'url' => ['/site/contact']]
 			];
 			if (Yii::$app->user->isGuest) {
-				array_push($items,['label' => Yii::t('app','Login'), 'url' => ['/site/login']]);
+				array_push($items,
+				array 
+					(
+						['label' => Yii::t('app','Login'), 'url' => ['/site/login']],
+						['label' => Yii::t('app','About'), 'url' => ['/site/about']],
+						['label' => Yii::t('app','Contact'), 'url' => ['/site/contact']]
+					)
+				);
 			} else {
 				if (BaseController::isAdmin()) {
 					array_push($items, 
@@ -56,6 +61,8 @@ AppAsset::register($this);
 						'items' => array(
 							array ('label' => Yii::t('app','Profile'),'url' => ['/site/profile'], 'linkOptions' => ['data-method' => 'post']),
 							array ('label' => Yii::t('app','Logout'),'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']),
+							['label' => Yii::t('app','About'), 'url' => ['/site/about']],
+							['label' => Yii::t('app','Contact'), 'url' => ['/site/contact']]
 						)
 					)
 				);

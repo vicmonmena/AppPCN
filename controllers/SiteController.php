@@ -20,6 +20,7 @@ use app\models\Ubicacion;
 use app\models\Notificacion;
 use app\controllers\BaseController;
 use app\models\PersonalCriticoForm;
+use app\models\ProfileForm;
 
 /**
  * Controlador inicial.
@@ -355,34 +356,15 @@ class SiteController extends BaseController {
 	 * Redirecciona a la página 'about'.
 	 */
     public function actionProfile() {
-	
-		$model = new ProfileForm();
-		if ($model->load(Yii::$app->request->post()) 
-			&& ($profileModel = User::findOne($id)) !== null) {
-			// TODO Validar datos y actualizar información del usuario en la BBDD.
-            Yii::$app->session->setFlash('contactFormSubmitted');
-            return $this->redirect(['profile', 'id' => $model->id]);
+		$model = Yii::$app->user->identity;
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			Yii::trace('Ahora si');
+			Yii::$app->getSession()->setFlash('Datos guardados correctamente');
         } else {
-			return $this->render('profile', ['model' => $model]);
+			Yii::trace('Ni de coña');
+			Yii::$app->getSession()->setFlash('Se ha producido un error');
 		}
-    }
-	
-	 /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id) {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+		return $this->render('profile',['model' => $model]);
     }
 	
 	/**
