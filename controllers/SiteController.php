@@ -21,12 +21,15 @@ use app\models\Notificacion;
 use app\controllers\BaseController;
 use app\models\PersonalCriticoForm;
 use app\models\ProfileForm;
+use app\models\IncidenciaForm;
 
 /**
  * Controlador inicial.
  */
 class SiteController extends BaseController {
     
+	var $personalCritico = array();
+	
 	/**
 	 * Define los comportamientos para el acceso a las partes de la web. 
 	 */
@@ -377,10 +380,38 @@ class SiteController extends BaseController {
 		 * string $username
 		 * email $username
 		 */
-	
-		$model = new PersonalCriticoForm();
-        return $this->render('about', [
-                'model' => $model,
-            ]);
+		$model = new IncidenciaForm();
+		//$model = new PersonalCriticoForm();
+        return $this->render('about', ['model' => $model, 'data' => $this->personalCritico]);
     }
+	
+	public function actionAdd() {
+		
+		$model = new IncidenciaForm();
+		/*
+		Yii::trace('personalCritico.count: ' . count($this->personalCritico));
+		if (count($this->personalCritico) > 0) {
+			$pc = $this->personalCritico[0];
+			Yii::trace(
+				'Name: ' . $pc->name .
+				'Surname: ' . $pc->surname .
+				'Email: ' . $pc->email . 
+				'Mobile: ' . $pc->mobile
+			);
+		}
+		*/
+		//$model = new PersonalCriticoForm();
+		if ($model->load(Yii::$app->request->post())) {
+			Yii::trace(
+				'Name: ' . $model->name .
+				'Surname: ' . $model->surname .
+				'Email: ' . $model->email . 
+				'Mobile: ' . $model->mobile
+			);
+			array_push($this->personalCritico, $model->personalCritico);
+		} else {
+			Yii::trace('No vienen datos');
+		}
+		return $this->render('about', ['model' => $model, 'data' => $this->personalCritico]);
+	}
 }

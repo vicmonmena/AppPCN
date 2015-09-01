@@ -21,8 +21,8 @@ class PersonalCriticoForm extends User {
     public function rules() {
 		Yii::trace('rules', __METHOD__);
         return [
-            [['id', 'status'], 'integer'],
-            [['email', 'name', 'surname', 'mobile'], 'safe'],
+            [['id'], 'integer'],
+            [['name', 'surname', 'email', 'mobile'], 'safe'],
         ];
     }
 

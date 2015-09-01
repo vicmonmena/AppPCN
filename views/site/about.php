@@ -1,80 +1,41 @@
 <?php
 use yii\helpers\Html;
-use yii\data\ActiveDataProvider;
-use kartik\grid\GridView;
-use kartik\form\ActiveForm;
-use kartik\builder\TabularForm;
 use app\models\PersonalCriticoForm;
+use app\models\IncidenciaForm;
+use yii\web\View;
+use yii\bootstrap\Tabs;
 
 /* @var $this yii\web\View */
 $this->title = 'About';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerJs(
+	"test();",
+	View::POS_END,
+	'add-row');
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>This is the About page. You may modify the following file to customize its content:</p>
-
-    <code><?= __FILE__ ?></code>
-	<p>
 	<?php
-		
-		$query = PersonalCriticoForm::find()->indexBy('id'); // where `id` is your primary key
- 
-		$dataProvider = new ActiveDataProvider([
-			'query' => $query,
-			'pagination' => [
-				'pagesize' => 10
-			]
-		]);
-		
-		$form = ActiveForm::begin();
-		$attribs = $model->getFormAttribs();
-		 
-		echo TabularForm::widget([
-			'dataProvider'=>$dataProvider,
-			'form'=>$form,
-			'attributes'=>$attribs,
-			'gridSettings'=>[
-				'floatHeader'=>true,
-				'panel'=>[
-					'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Personal Crítico</h3>',
-					'type' => GridView::TYPE_PRIMARY,
-					'after'=> Html::a('<i class="glyphicon glyphicon-plus"></i> Add New', '#', ['class'=>'btn btn-success']) . ' ' . 
-							Html::a('<i class="glyphicon glyphicon-remove"></i> Delete', '#', ['class'=>'btn btn-danger']) . ' ' .
-							Html::submitButton('<i class="glyphicon glyphicon-floppy-disk"></i> Save', ['class'=>'btn btn-primary'])
-				]
-			]   
-		]);
-		ActiveForm::end();
-	?>
-	</p>
-	<p>
-	<?php
-	// Generate a bootstrap responsive striped table with row highlighted on hover
-	echo GridView::widget([
-		'dataProvider'=> $dataProvider,
-		'columns' => [
-			'name','surname','email','mobile',
+	$content1 = $this->render('forms\step1', ['model' => $model]);
+	$modelPC = new PersonalCriticoForm();
+	$content2 = $this->render('forms\step2', ['model' => $modelPC, 'data' => $model->personalCritico]);
+	$content3 = $this->render('forms\step3', ['model' => $model]);
+	$items = [
+		[
+			'label' => 'Paso 1',
+			'content' => $content1,
+			'active' => true
 		],
-		'responsive'=>true,
-		'hover'=>true,
-		'toolbar' => [
-			[
-				'content'=>
-					Html::button('<i class="glyphicon glyphicon-plus"></i>', [
-						'type'=>'button', 
-						'title'=>Yii::t('kvgrid', 'Add Book'), 
-						'class'=>'btn btn-success'
-					]) . ' '.
-					Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], [
-						'class' => 'btn btn-default', 
-						'title' => Yii::t('kvgrid', 'Reset Grid')
-					]),
-			],
-			'{export}',
-			'{toggleData}'
-		]
-	]);?>
-	</p>
+		[
+			'label' => 'Paso 2',
+			'content' => $content2,
+		],
+		[
+			'label' => 'Paso 3',
+			'content' => $content3,
+		],
+	];
+	?>
+	<?= Tabs::widget(['items' => $items]);?>
 </div>

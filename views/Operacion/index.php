@@ -26,9 +26,34 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'name',
+			[
+				'attribute' => 'create_time',
+				'value' => 'create_time',
+				'filter' => \yii\jui\DatePicker::widget([
+					'model'=>$searchModel,
+					'attribute'=>'create_time',
+					'language' => 'es',
+					'dateFormat' => 'dd-MM-yyyy',
+				]),
+				'format' => 'html',
+			],
 			'create_time',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+				'class' => 'yii\grid\ActionColumn',
+				'template' => '{download} {view} {update} {delete}',
+				'buttons' => [
+					'download' => function ($url) {
+						return Html::a(
+							'<span class="glyphicon glyphicon-cloud-download"</span>',
+							$url, 
+							[
+								'title' => 'Download',
+								'data-pjax' => '0',
+							]
+						);
+					},
+				],
+			],
         ],
     ]); ?>
 
