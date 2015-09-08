@@ -37,7 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				]),
 				'format' => 'html',
 			],
-			'create_time',
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{download} {view} {update} {delete}',

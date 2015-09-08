@@ -25,7 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'name',
-			'create_time',
+			[
+				'attribute' => 'create_time',
+				'value' => 'create_time',
+				'filter' => \yii\jui\DatePicker::widget([
+					'model'=>$searchModel,
+					'attribute'=>'create_time',
+					'language' => 'es',
+					'dateFormat' => 'dd-MM-yyyy',
+				]),
+				'format' => 'html',
+			],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

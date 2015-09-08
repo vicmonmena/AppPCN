@@ -40,7 +40,7 @@ use app\models\PersonalCriticoForm;
 		]);
 	?>
 		<div class="form-group">
-			<?= Html::submitButton(Yii::t('app','Submit'), ['class' => 'btn btn-primary', 'name' => 'inputcode-button']) ?>
+			<?= Html::submitButton(Yii::t('app','Add'), ['class' => 'btn btn-primary', 'name' => 'inputcode-button']) ?>
 		</div>
 	<?php ActiveForm::end();?>
 	</p>
@@ -58,6 +58,7 @@ use app\models\PersonalCriticoForm;
 		$form = ActiveForm::begin();
 	?>
 	<p>
+	<?php \yii\widgets\Pjax::begin(); ?>
 	<?= 
 		GridView::widget([
 			'dataProvider' => $dataProvider,
@@ -68,6 +69,7 @@ use app\models\PersonalCriticoForm;
 			],
 		]);
 	?>
+	<?php \yii\widgets\Pjax::end(); ?>
 	</p>
 	<p>
 	<?php

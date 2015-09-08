@@ -12,3 +12,14 @@ function addRow(e) {
 	 return false;
    });   
 }
+
+
+$(function(){
+	// alert('Ready!');
+	//get the click of the create button (modalButton = id del button)
+	$('#modalButton').click(function() {
+		$('#modal').modal('show')
+			.find('#modalContent')
+			.load($(this).attr('value'));
+	})
+});

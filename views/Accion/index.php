@@ -26,7 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'descripcion',
             [
 				'attribute' => 'user_id',
@@ -36,8 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
 				'filter' => ArrayHelper::map(User::find()->all(), 'id', 'username'),
 			],
-			'create_time',
-			
+			[
+				'attribute' => 'create_time',
+				'value' => 'create_time',
+				'filter' => \yii\jui\DatePicker::widget([
+					'model'=>$searchModel,
+					'attribute'=>'create_time',
+					'language' => 'es',
+					'dateFormat' => 'dd-MM-yyyy',
+				]),
+				'format' => 'html',
+			],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
