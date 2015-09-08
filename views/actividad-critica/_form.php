@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="actividad-critica-form">
 
-    <?php $form = ActiveForm::begin(['id' => model->formName()]); ?>
+    <?php $form = ActiveForm::begin(['id' => $model->formName()]); ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
@@ -46,9 +46,9 @@ $('form#{$model->formName()}').on('beforeSubmit', function(e) {
 	.done(function(result) {
 		// console.log(result);
 		if(result == 1) {
-			//$(document).find('#secondmodal').modal('hide');
 			$(\$form).trigger("reset");
 			$.pjax.reload({container:'#actividadCriticaGrid'});
+			$(document).find('#modal').modal('hide');
 		} else {
 			$("#message").html(result);
 		}
